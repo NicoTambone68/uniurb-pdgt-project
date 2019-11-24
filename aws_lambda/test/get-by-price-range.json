@@ -1,0 +1,9 @@
+{
+  "searchCriteria": "Filter",
+  "searchFilter": {
+    "WinePrice": {
+      "From": "30",
+      "To": "50"
+    }
+  }
+}

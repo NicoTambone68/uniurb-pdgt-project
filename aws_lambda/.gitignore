@@ -1,0 +1,3 @@
+# Ignore third party javascript libraries
+#
+static/js/vendor/

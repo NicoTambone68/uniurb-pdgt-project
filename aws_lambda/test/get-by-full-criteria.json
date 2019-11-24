@@ -1,0 +1,12 @@
+{
+  "searchCriteria" : "Filter",
+    "searchFilter" : {
+        "WineName" : "Barolo",
+        "WineType" : "Red",
+      "WineDishes" : "cheese",
+       "WinePrice" : {
+            "From" : "30",
+              "To" : "50"
+    }
+  }
+}

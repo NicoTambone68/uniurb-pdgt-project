@@ -1,0 +1,13 @@
+{
+  "Verb": "Insert",
+  "Data": {
+    "WineId": "12345",
+    "WinePrice": "95",
+    "WineAlchohol": "14",
+    "WineDescription": "description of nebbiolo",
+    "WineDishes": "pasta, meat, salami, cheese",
+    "WineImgURL": "https://www.example.com",
+    "WineName": "Nebbiolo",
+    "WineType": "Red"
+  }
+}
