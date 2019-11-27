@@ -339,6 +339,19 @@ Similarly, there's an edit page which allows to modify and delete records. (Call
 (I'm going to improve this ugly interface asap!)
 
 
+# The configuration file config.js
+
+Please, take note that the current repository doesn't include the config.js file in static/js/config. Change the URLs, according to your own settings.
+```
+var api_get_url          = "https://<API>.amazonaws.com/release/wines?searchCriteria=All";
+var api_base_url_update  = "https://<API>.amazonaws.com/release/wines-update?";
+var api_base_url_get_key = "https://<API>.amazonaws.com/release/wines?";
+var api_base_url_delete  = "https://<API>.amazonaws.com/release/wines-delete?";
+```
+
+
+
+
 #License
 
 [MIT](https://opensource.org/licenses/MIT)
