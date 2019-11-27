@@ -1,22 +1,22 @@
 Nicolò Tambone 267259
 
-#PDGT Project: 
-##A stub for RESTful APIs implemented with AWS Lambda and AWS API Gateway
+# PDGT Project: 
+## A stub for RESTful APIs implemented with AWS Lambda and AWS API Gateway
 
 This repository contains the code and the documentation of a small but fully functional RESTful web service based on the serverless technology available from Amazon AWS. The PDGT Project implements a simple catalog of a fictitious wines producer or distributor. The API allows to search the catalog for some given parameters such as wine name, suitable dishes, price range and others. Moreover it's possible to edit or delete entries. In short it implements a basic CRUD system. The current release lacks of authentication features which unfortunately were not implemented due to a lack of time. Nevertheless these features may easily be integrated in a future release using AWS Cognito.
 
-#Architecture overview
+# Architecture overview
 
 The PDGT Project API are written in Python 3.8. The code runs on a service named AWS Lambda which is a serverless platform. Depending on its complexity and workload, every method implemented in AWS Lambda may be given a different scale of resources. The method itself is triggered by an external service, namely AWS API Gateway, which implements the routes and the HTTP methods involved  with the actual API call. Also, AWS API Gateway exposes the public URLs for the API calls.
 Data is stored on AWS DynamoDB, which is a high-performance NoSQL database.
 
 ![AWS Lambda + Gateway + DynamoDB](./aws_lambda/img/AWS_arc.png)
 
-#Why a serverless solution?
+# Why a serverless solution?
 
 A serverless based API has many advantages in terms of reduced complexity, cost effectiveness and time-to-deliver, expecially in the case of small applications used sporadically and with a light workload for which setting up a fully functional server would result in system resources waiting idle for most of the time. Nevertheless AWS Lambda can scale easily and effectively to huge dimensions if required. 
 
-#Main architectural components
+# Main architectural components
 
 The API in itself is based on AWS API Gateway to handle the URLs, AWS Lambda for the login and AWS Dynamo DB for data storage. Another service, namely AWS S3, has been employed to host a minimal client based on  HTML and javascript.
 
@@ -27,9 +27,9 @@ The API in itself is based on AWS API Gateway to handle the URLs, AWS Lambda for
 
 
 
-#API Description and Documentation
+# API Description and Documentation
 
-##Open API Documentation
+## Open API Documentation
 ```
 {
   "PDGT-Project": "1.0",
@@ -274,7 +274,7 @@ The API in itself is based on AWS API Gateway to handle the URLs, AWS Lambda for
 }
 ```
 
-#A brief Overview of the methods implemented in the API
+# A brief Overview of the methods implemented in the API
 
 The PDGT-Project API implements three main methods: GET, PUT and DELETE. The method GET is flexible. It allows to retrieve data in three different modes: 
 
@@ -352,6 +352,6 @@ var api_base_url_delete  = "https://<API>.amazonaws.com/release/wines-delete?";
 
 
 
-#License
+# License
 
 [MIT](https://opensource.org/licenses/MIT)
