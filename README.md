@@ -287,7 +287,7 @@ The PDGT-Project API implements three main methods: GET, PUT and DELETE. The met
 
 As mentioned before, the GET method implements three variants. This is achieved through the parameter ```searchCriteria``` which may have one of the following values:```All | Key | Filter```. If ```searchCriteria=All``` no trailing parameters will be necessary. If ```searchCriteria=Key``` then the subsequent parameter ```WineId=<ID>``` is required. If ```searchCriteria=Filter``` then a series of further query parameters is required.
 
-####Examples
+#### Examples
 1. Retrieve everything: ```<base URL>/wines?searchCriteria=All```
 1. Retrieve a single record: ```<base URL>/wines?searchCriteria=Key&WineId=barolo```
 1. Retrieve a set of records based on a query: ```<base URL>/wines?searchCriteria=Filter&WineName=Barolo&WineType=ANY&WineDishes=ANY&From=0&To=9999```
