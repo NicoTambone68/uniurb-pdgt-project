@@ -1,7 +1,7 @@
 Nicolò Tambone 267259
 
-#PDGT Project: 
-##A stub for RESTful APIs implemented with AWS Lambda and AWS API Gateway
+# PDGT Project: 
+## A stub for RESTful APIs implemented with AWS Lambda and AWS API Gateway
 
 This repository contains the code and the documentation of a small but fully functional RESTful web service based on the serverless technology available from Amazon AWS. The PDGT Project implements a simple catalog of a fictitious wines producer or distributor. The API allows to search the catalog for some given parameters such as wine name, suitable dishes, price range and others. Moreover it's possible to edit or delete entries. In short it implements a basic CRUD system. The current release lacks of authentication features which unfortunately were not implemented due to a lack of time. Nevertheless these features may easily be integrated in a future release using AWS Cognito.
 
