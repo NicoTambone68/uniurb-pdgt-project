@@ -1,0 +1,14 @@
+{
+  "Verb": "Insert",
+  "Data": {
+    "WineId": "$input.params('WineId')",
+    "WinePrice": "$input.params('WinePrice')",
+    "WineAlchohol": "$input.params('WineAlchohol')",
+    "WineDescription": "$input.params('WineDescription')",
+    "WineDishes": "$input.params('WineDishes')",
+    "WineImgURL": "$input.params('WineImgURL')",
+    "WineName": "$input.params('WineName')",
+    "WineType": "$input.params('WineType')"
+  }
+}
+

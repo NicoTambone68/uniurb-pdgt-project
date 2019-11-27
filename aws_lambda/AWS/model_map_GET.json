@@ -1,0 +1,14 @@
+{
+   "searchCriteria": "$input.params('searchCriteria')",
+          "WineId" : "$input.params('WineId')",
+        "searchFilter" : {
+            "WineName" : "$input.params('WineName')",
+            "WineType" : "$input.params('WineType')",
+          "WineDishes" : "$input.params('WineDishes')",
+           "WinePrice" : {
+                    "From" : "$input.params('From')",
+                      "To" : "$input.params('To')"
+            }
+        }
+}
+

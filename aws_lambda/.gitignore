@@ -1,3 +1,4 @@
 # Ignore third party javascript libraries
 #
 static/js/vendor/
+static/js/config/

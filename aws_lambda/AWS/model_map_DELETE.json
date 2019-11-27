@@ -1,0 +1,6 @@
+{
+  "Verb": "$input.params('Verb')",
+  "Data": {
+    "WineId": "$input.params('WineId')"
+  }
+}

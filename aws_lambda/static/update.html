@@ -1,0 +1,272 @@
+<html>
+	<head><meta charset="UTF-8"></head>
+<style>
+ .inline { display: inline; margin: 0 1em 0 1em; }
+ .block  { display: block; margin: 1em 0 1em 0;}
+</style>
+
+	<body>
+
+
+<div class= "block">
+<div class="inline"><a href="index.html">Search Page</a></div>
+<div class="inline"><a href="update.html">Edit Page</a></div>
+</div>
+<div class= "block">
+<div class="inline" style="display:none"><input id="winid" type="text"></div>
+<div class="inline">Wine Name:<input id="wname" type="text"></div>
+<div class="inline">Wine Type:<input id="wtype" type="text"></div>
+<div class="inline">Wine Alchohol:<input id="walch" type="text"></div>
+</div>
+<div class= "block">
+<div class="inline">Wine Description:<input id="wdesc" type="text"></div>
+<div class="inline">Suitable for (dish):<input id="wdish" type="text"></div>
+<div class="inline">Image URL<input id="wimag" type="text"></div>
+</div>
+<div class= "block">
+<div class="inline">Price:<input id="wpric" type="text"></div>
+<div class="inline"><input id="new_btn" type="submit" value="Insert New"></div>
+<div class="inline"><input id="submit_btn" type="submit" value="Submit Changes"></div>
+</div>
+
+
+<div id="entries" class=block></div>
+
+
+
+
+<script src="./js/vendor/jquery-3.1.0.js"></script>
+<script src="./js/config/config.js"></script>
+    <script type="text/javascript" language = "javascript">
+
+            var API_GET_URL          = api_get_url;          //"https://<---base-URL--->.<---AWS Zone--->.amazonaws.com/release/wines?searchCriteria=All";
+            var API_BASE_URL_UPDATE  = api_base_url_update;  //"https://<---base-URL--->.<---AWS Zone--->.amazonaws.com/release/wines-update?";
+            var API_BASE_URL_GET_KEY = api_base_url_get_key; //"https://<---base-URL--->.<---AWS Zone--->.amazonaws.com/release/wines?";
+            var API_BASE_URL_DELETE  = api_base_url_delete;  //"https://<---base-URL--->.<---AWS Zone--->.amazonaws.com/release/wines-delete?";
+
+            $(document).ready(function() {
+
+                update_view();
+
+            }); // $(document).ready(function() 
+
+
+
+            // update the doc with fresh data
+            //
+            function update_view() {
+
+               // initialize an array of objects to store the search results
+               var wineItems = new Array();
+
+                    // read the API response  
+                    $.getJSON(API_GET_URL, function(data) {
+
+                        // we need the body of the response; discard the rest
+                        var body = $.parseJSON(data.body);
+                        
+                        // put each element in the array
+                        $.each(body, function(key, value) {
+                                    wineItems.push(value);
+
+                        });
+
+                        // write the array to the document
+                        write_search_result(wineItems);
+
+                    });
+
+
+            } // update_view 
+
+
+
+            // gets an array of objects and write to the #entries  
+            function write_search_result( value ) {
+
+                // preemptive clear of the contents to avoid duplicates
+                $('#entries').empty();
+
+                // write the aaray to the document
+                for(i=0; i < value.length; i++) {
+
+                                $('#entries').append('<div class="block">'   +
+                                                     '<div class="inline">'  + value[i].WineName + '</div>' +
+                                                     '<div class="inline">'  + value[i].WineType + '</div>' + 
+                                                     '<div class="inline">'  + value[i].WineDescription + '</div>' + 
+                                                     '<div class="inline">'  + value[i].WineAlchohol + '\% vol.</div>' + 
+                                                     '<div class="inline">€' + value[i].WinePrice + '</div>' +
+                                                     '<div class="inline"><a href="javascript:edit_record(' + "'" + String(value[i].WineId) + "'" + ')">Edit</a></div>' +
+                                                     '<div class="inline"><a href="javascript:delete_record(' + "'" + value[i].WineId 
+                                                                                                              + "', '" + value[i].WineName.replace("'", "") + "'" +')">Delete</a></div></div>');
+                }
+
+            } // write_search_result
+
+
+
+            // Call the API 
+            //
+            $("#search_btn").on('click', function() {
+
+               // read the filter condition from the inputs 
+
+               var wname = (!$.trim($('#wname').val()).length) ? "ANY" : $.trim($('#wname').val());
+               var wtype = (!$.trim($('#wtype').val()).length) ? "ANY" : $.trim($('#wtype').val());
+               var wdish = (!$.trim($('#wdish').val()).length) ? "ANY" : $.trim($('#wdish').val());
+               var wprfr = (!$.trim($('#wprfr').val()).length) ? "0" : $.trim($('#wprfr').val());
+               var wprto = (!$.trim($('#wprfr').val()).length) ? "9999" : $.trim($('#wprto').val());
+
+
+               var myURL = API_BASE_URL + "searchCriteria=Filter&WineName="   + wname 
+                                                             + "&WineType="   + wtype
+                                                             + "&WineDishes=" + wdish
+                                                             + "&From="       + wprfr
+                                                             + "&To="         + wprto;
+
+               // initialize an array of objects to store the search results
+               var wineItems = new Array();
+
+               // read the API response  
+               $.getJSON(myURL, function(data) {
+
+                        // we need the body of the response; discard the rest
+                        var body = $.parseJSON(data.body);
+                        
+                        // put each element in the array
+                        $.each(body, function(key, value) {
+                                    wineItems.push(value);
+
+                        });
+
+                        // write the array to the document
+                        write_search_result(wineItems);
+
+               });
+
+            }); // $("#search_btn").on('click', function() 
+
+            //
+            //
+            //
+            $("#submit_btn").on('click',  function () {
+
+                    var updateURL = API_BASE_URL_UPDATE + "Verb=Insert&WineId=" + $('#winid').val() +
+                                    "&WinePrice="       + $('#wpric').val() +   
+                                    "&WineAlchohol="    + $('#walch').val() +
+                                    "&WineDescription=" + $('#wdesc').val() .replace(" ", "%20") +
+                                    "&WineDishes="      + $('#wdish').val().replace(" ", "%20") +
+                                    "&WineImgURL="      + $('#wimag').val() +
+                                    "&WineName="        + $('#wname').val().replace(" ", "%20") +
+                                    "&WineType="        + $('#wtype').val();
+
+                    var txt;
+                    var r = confirm("Do you really want to commit changes to " + $('#winid').val() + "?");
+                    if (r == true) {
+
+                            $.ajax({
+                                    url: updateURL,
+                                    type: "PUT",
+                                    success: function() {
+                                            // refresh data
+                                            update_view(); 
+                                    }
+                            });                  
+
+                          // clear texts 
+                          $(':text').val('');
+                    } else {
+                          txt = "You pressed Cancel!";
+                    }
+
+            });
+
+
+            $("#new_btn").on('click',  function () {
+
+                 // clear texts 
+                 $(':text').val('');
+                 $('#winid').val(makeid(10));
+                 $('#wname').val("<new>");
+
+
+            });
+
+            //
+            //
+            //
+            function edit_record( key ) {
+
+                    var getURL = API_BASE_URL_GET_KEY + "searchCriteria=Key&WineId=" + key;
+
+                    // read the API response  
+                    $.getJSON(getURL, function(data) {
+
+                        // we need the body of the response; discard the rest
+                        var body = $.parseJSON(data.body);
+                        
+                        // put each element in the array
+                        $.each(body, function(key, value) {
+
+
+                                    $('#winid').val(value.WineId);
+                                    $('#wname').val(value.WineName);
+                                    $('#wtype').val(value.WineType);
+                                    $('#walch').val(value.WineAlchohol);
+                                    $('#wdesc').val(value.WineDescription);
+                                    $('#wdish').val(value.WineDishes);
+                                    $('#wimag').val(value.WineImgURL);
+                                    $('#wpric').val(value.WinePrice);
+
+                        });
+
+                    });
+
+
+
+
+            } // edit_record( key ) {
+
+
+            // Call the API to delete the entry that corresponds to key
+            //
+            //
+            function delete_record( key, name ) {
+
+                    var deleteUrl = API_BASE_URL_DELETE + "Verb=Delete&WineId=" + key;
+                    var txt;
+                    var r = confirm("Do you really want to delete " + (name) + "?" );
+
+                    if (r == true) {
+
+                            $.ajax({
+                                    url: deleteUrl,
+                                    type: "DELETE",
+                                    success: function() {
+                                            // refresh data
+                                            update_view(); 
+                                    }
+                            });                  
+
+                    } else {
+                          txt = "You pressed Cancel!";
+                    }
+
+            } // delete_record( key, name ) {
+
+
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+} // makeid
+
+
+
+  </script>
+ </body>
+</html>

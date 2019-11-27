@@ -1,0 +1,119 @@
+<html>
+	<head><meta charset="UTF-8"></head>
+<style>
+ .inline { display: inline; margin: 0 1em 0 1em; }
+ .block  { display: block; margin: 1em 0 1em 0;}
+</style>
+
+	<body>
+
+
+<div class= "block">
+<div class="inline"><a href="index.html">Search Page</a></div>
+<div class="inline"><a href="update.html">Edit Page</a></div>
+</div>
+<div class= "block" id="search">
+<div class="inline">Wine Name:<input id="wname" type="text"></div>
+<div class="inline">Wine Type:<input id="wtype" type="text"></div>
+<div class="inline">Suitable for (dish):<input id="wdish" type="text"></div>
+<div class="inline">Starting Price:<input id="wprfr" type="text"></div>
+<div class="inline">Top Price:<input id="wprto" type="text"></div>
+<div class="inline"><input id="search_btn" type="submit" value="Search Wine"></div>
+</div>
+
+
+<div id="entries" class=block></div>
+
+<script src="./js/vendor/jquery-3.1.0.js"></script>
+<script src="./js/config/config.js"></script>
+   <script type="text/javascript" language = "javascript">
+
+             var API_BASE_URL = api_base_url_get_key; //"https://<---base-URL--->.<---AWS Zone--->.amazonaws.com/release/wines?";
+
+
+/*
+            $(document).ready(function() {
+
+               $.getJSON(API_GET_URL, function(data) {
+
+                        var body = $.parseJSON(data.body);
+                       
+                        $.each(body, function(key, value) {
+
+                                $('#entries').append('<div>' + value.WineName + '</div>' +
+                                                     '<div>' + value.WineDescription + '</div>' + 
+                                                     '<div>' + value.WineAlchohol + '</div>' + 
+                                                     '<div>' + value.WinePrice + '</div>');
+                        });
+
+               });
+
+            });
+
+*/
+
+            // gets an array of objects and write to the #entries  
+            function write_search_result( value ) {
+
+                // preemptive clear of the contents to avoid duplicates
+                $('#entries').empty();
+
+                // write the aaray to the document
+                for(i=0; i < value.length; i++) {
+
+                                $('#entries').append('<div class="block">'   +
+                                                     '<div class="inline">' + value[i].WineName + '</div>' +
+                                                     '<div class="inline">' + value[i].WineType + '</div>' + 
+                                                     '<div class="inline">' + value[i].WineDescription + '</div>' + 
+                                                     '<div class="inline">' + value[i].WineAlchohol + '\% vol.</div>' + 
+                                                     '<div class="inline">€' + value[i].WinePrice + '</div></div>');
+                }
+
+            } // write_search_result
+
+
+
+            // Call the API 
+            //
+            $("#search_btn").on('click', function() {
+
+               // read the filter condition from the inputs 
+
+               var wname = (!$.trim($('#wname').val()).length) ? "ANY" : $.trim($('#wname').val());
+               var wtype = (!$.trim($('#wtype').val()).length) ? "ANY" : $.trim($('#wtype').val());
+               var wdish = (!$.trim($('#wdish').val()).length) ? "ANY" : $.trim($('#wdish').val());
+               var wprfr = (!$.trim($('#wprfr').val()).length) ? "0" : $.trim($('#wprfr').val());
+               var wprto = (!$.trim($('#wprfr').val()).length) ? "9999" : $.trim($('#wprto').val());
+
+
+               var myURL = API_BASE_URL + "searchCriteria=Filter&WineName="   + wname 
+                                                             + "&WineType="   + wtype
+                                                             + "&WineDishes=" + wdish
+                                                             + "&From="       + wprfr
+                                                             + "&To="         + wprto;
+
+               // initialize an array of objects to store the search results
+               var wineItems = new Array();
+
+               // read the API response  
+               $.getJSON(myURL, function(data) {
+
+                        // we need the body of the response; discard the rest
+                        var body = $.parseJSON(data.body);
+                        
+                        // put each element in the array
+                        $.each(body, function(key, value) {
+                                    wineItems.push(value);
+
+                        });
+
+                        // write the array to the document
+                        write_search_result(wineItems);
+
+               });
+
+            }); // $("#search_btn").on('click', function() 
+
+      </script>
+	</body>
+</html>
